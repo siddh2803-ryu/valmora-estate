@@ -1,0 +1,3070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valmora — A private estate in the Douro hills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<style>
+/* ============================================================
+   VALMORA ESTATE — DESIGN SYSTEM
+   ============================================================ */
+
+:root {
+  --ground: #F4EFE6;
+  --ground-deep: #EAE3D6;
+  --ink: #1E1B16;
+  --ink-soft: #6E675C;
+  --accent-earth: #7A4A2B;
+  --line: rgba(30,27,22,0.2);
+  --scrim: linear-gradient(to top, rgba(30,27,22,0.35) 0%, transparent 100%);
+
+  --font-serif: 'Fraunces', 'Playfair Display', Georgia, serif;
+  --font-grotesk: 'Archivo', 'Inter', system-ui, sans-serif;
+
+  --space-section: clamp(80px, 12vh, 200px);
+  --space-section-mobile: clamp(60px, 10vh, 100px);
+  --gutter: 5vw;
+  --max-width: 1440px;
+
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-enter: 900ms;
+  --duration-hover: 350ms;
+  --duration-page: 400ms;
+}
+
+/* Reset & Base */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-grotesk);
+  background: var(--ground);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* No pure white or black anywhere */
+::selection { background: var(--accent-earth); color: var(--ground); }
+
+/* Typography */
+.font-serif { font-family: var(--font-serif); }
+.font-grotesk { font-family: var(--font-grotesk); }
+
+.eyebrow {
+  font-family: var(--font-grotesk);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+
+.h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(44px, 6.5vw, 96px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 3.5vw, 52px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 2vw, 30px);
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.h4 {
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.5vw, 24px);
+  font-weight: 300;
+  line-height: 1.3;
+}
+
+.body-text {
+  font-size: 15px;
+  line-height: 1.65;
+  max-width: 62ch;
+  color: var(--ink-soft);
+}
+
+.giant-numeral {
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 5vw, 64px);
+  opacity: 0.25;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.label-link {
+  font-family: var(--font-grotesk);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+}
+
+.label-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent-earth);
+  transition: width var(--duration-hover) var(--ease-editorial);
+}
+
+.label-link:hover::after { width: 100%; }
+
+/* Hairline */
+.hairline {
+  border: none;
+  height: 1px;
+  background: var(--line);
+  width: 100%;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 24px var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background var(--duration-hover) var(--ease-editorial), 
+              transform var(--duration-hover) var(--ease-editorial),
+              border-color var(--duration-hover) var(--ease-editorial);
+  border-bottom: 1px solid transparent;
+}
+
+.header--solid {
+  background: var(--ground);
+  border-bottom-color: var(--line);
+}
+
+.header--hidden { transform: translateY(-100%); }
+
+.header__left, .header__right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.hamburger {
+  width: 22px;
+  height: 14px;
+  position: relative;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--ink);
+  position: absolute;
+  left: 0;
+  transition: transform var(--duration-hover) var(--ease-editorial);
+}
+
+.hamburger span:first-child { top: 0; }
+.hamburger span:last-child { bottom: 0; }
+
+.wordmark {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.header__center {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .header__center {
+    display: flex;
+    gap: 32px;
+  }
+  .header__center a {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color var(--duration-hover);
+  }
+  .header__center a:hover { color: var(--accent-earth); }
+}
+
+.lang-trigger, .book-pill {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  background: none;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-grotesk);
+}
+
+.book-pill {
+  border: 1px solid var(--ink);
+  padding: 8px 20px;
+  border-radius: 100px;
+  transition: background var(--duration-hover), color var(--duration-hover);
+}
+
+.book-pill:hover {
+  background: var(--ink);
+  color: var(--ground);
+}
+
+/* ============================================================
+   OVERLAYS
+   ============================================================ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--ground-deep);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 500ms var(--ease-editorial), visibility 500ms;
+  overflow-y: auto;
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.overlay__inner {
+  min-height: 100vh;
+  padding: 120px var(--gutter) 80px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.overlay__close {
+  position: absolute;
+  top: 24px;
+  left: var(--gutter);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  background: none;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-grotesk);
+}
+
+/* Menu Overlay */
+.menu-overlay .overlay__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 60px;
+}
+
+@media (min-width: 768px) {
+  .menu-overlay .overlay__inner {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+}
+
+.menu-group {
+  position: relative;
+  padding-top: 60px;
+}
+
+.menu-group__num {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 5vw, 64px);
+  opacity: 0.2;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.menu-group__title {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 2.5vw, 36px);
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+
+.menu-group__subtitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+}
+
+.menu-group__links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.menu-group__links a {
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 300;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color var(--duration-hover);
+}
+
+.menu-group__links a:hover { color: var(--accent-earth); }
+
+.menu-secondary {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--line);
+  padding-top: 40px;
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.menu-secondary a {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color var(--duration-hover);
+}
+
+.menu-secondary a:hover { color: var(--accent-earth); }
+
+.menu-bottom {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+/* Booking Overlay */
+.booking-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.booking-block {
+  position: relative;
+  padding: 60px 0 60px 100px;
+  border-bottom: 1px solid var(--line);
+}
+
+.booking-block__num {
+  position: absolute;
+  left: 0;
+  top: 60px;
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 5vw, 64px);
+  opacity: 0.2;
+  font-weight: 300;
+}
+
+.booking-block__title {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 2.5vw, 36px);
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+
+.booking-block__links {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+/* Newsletter Overlay */
+.newsletter-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.form-field {
+  margin-bottom: 40px;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  padding: 12px 0;
+  font-family: var(--font-grotesk);
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color var(--duration-hover);
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-bottom-color: var(--accent-earth);
+}
+
+.form-field label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  accent-color: var(--accent-earth);
+}
+
+.consent-line {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.consent-line a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-earth);
+}
+
+.submit-pill {
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  padding: 12px 32px;
+  border-radius: 100px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  font-family: var(--font-grotesk);
+  transition: background var(--duration-hover), color var(--duration-hover);
+}
+
+.submit-pill:hover {
+  background: var(--ink);
+  color: var(--ground);
+}
+
+.newsletter-success {
+  text-align: center;
+  padding-top: 80px;
+  display: none;
+}
+
+.newsletter-success.active { display: block; }
+
+/* ============================================================
+   MODULES
+   ============================================================ */
+
+/* Module 1: Hero-Cinema */
+.hero-cinema {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-cinema__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero-cinema__media img,
+.hero-cinema__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-cinema__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+  z-index: 2;
+}
+
+.hero-cinema__content {
+  position: relative;
+  z-index: 3;
+  padding: 0 var(--gutter) 80px;
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.hero-cinema__eyebrow {
+  margin-bottom: 16px;
+}
+
+.hero-cinema__title {
+  color: var(--ground);
+  max-width: 12ch;
+}
+
+.hero-cinema__sound {
+  position: absolute;
+  bottom: 40px;
+  right: var(--gutter);
+  z-index: 3;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ground);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-grotesk);
+  opacity: 0.8;
+  transition: opacity var(--duration-hover);
+}
+
+.hero-cinema__sound:hover { opacity: 1; }
+
+.hero-cinema__scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ground);
+  opacity: 0.6;
+}
+
+/* Module 2: Pillar-Panel */
+.pillar-panel {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.pillar-panel__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.pillar-panel__media img,
+.pillar-panel__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pillar-panel__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+  z-index: 2;
+}
+
+.pillar-panel__content {
+  position: relative;
+  z-index: 3;
+  padding: 0 var(--gutter) 80px;
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.pillar-panel__eyebrow { margin-bottom: 16px; color: var(--ground); opacity: 0.8; }
+.pillar-panel__title { color: var(--ground); margin-bottom: 12px; }
+.pillar-panel__line { 
+  color: var(--ground); 
+  opacity: 0.9; 
+  margin-bottom: 24px; 
+  max-width: 50ch;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.pillar-panel__links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.pillar-panel__links a {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ground);
+  text-decoration: none;
+  position: relative;
+}
+
+.pillar-panel__links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent-earth);
+  transition: width var(--duration-hover) var(--ease-editorial);
+}
+
+.pillar-panel__links a:hover::after { width: 100%; }
+
+.pillar-panel__numeral {
+  position: absolute;
+  top: 40px;
+  right: var(--gutter);
+  z-index: 3;
+  color: var(--ground);
+}
+
+/* Module 3: Statement-Block */
+.statement-block {
+  padding: var(--space-section) var(--gutter);
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.statement-block__eyebrow {
+  margin-bottom: 32px;
+}
+
+.statement-block__eyebrow--bottom {
+  margin-top: 32px;
+  margin-bottom: 0;
+}
+
+.statement-block__statement {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 3vw, 42px);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+/* Module 4: Plate-Full */
+.plate-full {
+  width: 100%;
+  overflow: hidden;
+}
+
+.plate-full__frame {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.plate-full__frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: scale(1);
+  transition: transform 0.1s linear;
+}
+
+.plate-full__caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 24px var(--gutter) 0;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.plate-full__caption-text {
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+/* Module 5: Diptych-5050 */
+.diptych {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding: 0 var(--gutter);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .diptych { grid-template-columns: 1fr 1fr; }
+}
+
+.diptych__image {
+  width: 100%;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+}
+
+.diptych__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.diptych__text {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 60px var(--gutter) 0;
+}
+
+.diptych__text .h2 { margin-bottom: 20px; }
+.diptych__text .body-text { margin-bottom: 24px; }
+
+/* Module 6: Parallax-Pair */
+.parallax-pair {
+  position: relative;
+  padding: var(--space-section) var(--gutter);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.parallax-pair__large {
+  width: 66%;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.parallax-pair__large img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.parallax-pair__small {
+  width: 35%;
+  position: absolute;
+  right: var(--gutter);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.parallax-pair__small img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.parallax-pair__text {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 10%;
+  z-index: 3;
+  max-width: 400px;
+}
+
+.parallax-pair__text .h2 { margin-bottom: 12px; }
+.parallax-pair__text .body-text { margin-bottom: 20px; }
+
+@media (max-width: 767px) {
+  .parallax-pair { flex-direction: column; min-height: auto; }
+  .parallax-pair__large { width: 100%; }
+  .parallax-pair__small {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    width: 60%;
+    margin: -40px 0 0 auto;
+  }
+  .parallax-pair__text {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    margin-top: 40px;
+  }
+}
+
+/* Module 7: Square-Overlay */
+.square-overlay {
+  padding: var(--space-section) var(--gutter);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .square-overlay {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+  .square-overlay--reverse { direction: rtl; }
+  .square-overlay--reverse > * { direction: ltr; }
+}
+
+.square-overlay__image {
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.square-overlay__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.square-overlay__text {
+  background: var(--ground);
+  padding: 48px;
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 768px) {
+  .square-overlay__text {
+    margin-left: -80px;
+    padding: 64px;
+  }
+  .square-overlay--reverse .square-overlay__text {
+    margin-left: 0;
+    margin-right: -80px;
+  }
+}
+
+.square-overlay__text .eyebrow { margin-bottom: 16px; }
+.square-overlay__text .h2 { margin-bottom: 20px; }
+.square-overlay__text .body-text { margin-bottom: 24px; }
+
+/* Module 8: Journal-Feature */
+.journal-feature {
+  padding: var(--space-section) var(--gutter);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.journal-feature__eyebrow { margin-bottom: 16px; }
+.journal-feature__title { margin-bottom: 12px; }
+.journal-feature__teaser { 
+  margin-bottom: 24px; 
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.journal-feature__link { margin-bottom: 40px; display: inline-block; }
+
+.journal-feature__image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.journal-feature__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Module 9: Collage-Cluster */
+.collage-cluster {
+  position: relative;
+  min-height: 150vh;
+  padding: var(--space-section) 0;
+  overflow: hidden;
+}
+
+.collage-cluster__images {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.collage-cluster__img {
+  position: absolute;
+  overflow: hidden;
+}
+
+.collage-cluster__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collage-cluster__text {
+  position: relative;
+  z-index: 10;
+  max-width: 400px;
+  padding: 48px;
+  background: var(--ground);
+  margin: 40px var(--gutter);
+}
+
+.collage-cluster__text .eyebrow { margin-bottom: 12px; }
+.collage-cluster__text .h4 { margin-bottom: 16px; }
+
+@media (max-width: 767px) {
+  .collage-cluster { min-height: auto; }
+  .collage-cluster__images { 
+    position: relative; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px;
+    padding: 0 var(--gutter);
+  }
+  .collage-cluster__img {
+    position: relative;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 3/4;
+    left: auto !important;
+    top: auto !important;
+  }
+  .collage-cluster__img:nth-child(even) { margin-left: 40px; width: calc(100% - 40px) !important; }
+}
+
+/* Module 10: Index-List */
+.index-list {
+  padding: var(--space-section) var(--gutter);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.index-list__intro {
+  margin-bottom: 60px;
+  max-width: 50ch;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.index-row {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  transition: background var(--duration-hover);
+}
+
+.index-row:last-child { border-bottom: 1px solid var(--line); }
+
+.index-row__thumb {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.index-row__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-hover) var(--ease-editorial);
+}
+
+.index-row:hover .index-row__thumb img { transform: scale(1.04); }
+
+.index-row__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.index-row__meta {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+}
+
+.index-row__title {
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.5vw, 24px);
+  font-weight: 300;
+}
+
+.index-row__num {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 300;
+  opacity: 0.25;
+  transition: color var(--duration-hover), opacity var(--duration-hover);
+}
+
+.index-row:hover .index-row__num {
+  color: var(--accent-earth);
+  opacity: 1;
+}
+
+.index-row__arrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  transition: color var(--duration-hover);
+}
+
+.index-row:hover .index-row__arrow { color: var(--accent-earth); }
+
+@media (max-width: 767px) {
+  .index-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .index-row__thumb {
+    width: 100%;
+    height: 200px;
+  }
+  .index-row__num { display: none; }
+}
+
+/* Module 11: Gallery-Drag */
+.gallery-drag {
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  padding: var(--space-section) 0;
+}
+
+.gallery-drag:active { cursor: grabbing; }
+
+.gallery-drag__strip {
+  display: flex;
+  gap: 24px;
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: auto;
+}
+
+.gallery-drag__strip::-webkit-scrollbar { display: none; }
+
+.gallery-drag__item {
+  flex-shrink: 0;
+  width: 400px;
+  height: 500px;
+  overflow: hidden;
+}
+
+.gallery-drag__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.gallery-drag__cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 50;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  background: var(--ink);
+  color: var(--ground);
+  padding: 8px 16px;
+  border-radius: 100px;
+  opacity: 0;
+  transition: opacity var(--duration-hover);
+}
+
+.gallery-drag:hover .gallery-drag__cursor { opacity: 1; }
+
+@media (max-width: 767px) {
+  .gallery-drag__item { width: 300px; height: 380px; }
+}
+
+/* Module 12: Mega-Footer */
+.mega-footer {
+  background: var(--ground-deep);
+  padding: 100px var(--gutter) 40px;
+}
+
+.mega-footer__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px 40px;
+  max-width: var(--max-width);
+  margin: 0 auto 80px;
+}
+
+@media (min-width: 768px) {
+  .mega-footer__grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.footer-col__label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+
+.footer-col__links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-col__links a {
+  font-size: 14px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color var(--duration-hover);
+}
+
+.footer-col__links a:hover { color: var(--accent-earth); }
+
+.footer-wordmark {
+  font-family: var(--font-serif);
+  font-size: clamp(60px, 12vw, 180px);
+  font-weight: 300;
+  text-align: center;
+  color: var(--ink);
+  opacity: 0.15;
+  line-height: 1;
+  margin: 60px 0;
+  overflow: hidden;
+}
+
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+.footer-legal__text {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.footer-legal__links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-legal__links a {
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color var(--duration-hover);
+}
+
+.footer-legal__links a:hover { color: var(--accent-earth); }
+
+/* ============================================================
+   PAGE TRANSITIONS & SCROLL ANIMATIONS
+   ============================================================ */
+
+.page {
+  display: none;
+  opacity: 0;
+  transition: opacity var(--duration-page) var(--ease-editorial);
+}
+
+.page.active {
+  display: block;
+  opacity: 1;
+}
+
+.section-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--duration-enter) var(--ease-editorial),
+              transform var(--duration-enter) var(--ease-editorial);
+}
+
+.section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Line mask reveal for headlines */
+.line-mask {
+  overflow: hidden;
+  display: block;
+}
+
+.line-mask__inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform var(--duration-enter) var(--ease-editorial);
+}
+
+.line-mask.visible .line-mask__inner {
+  transform: translateY(0);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .section-reveal,
+  .line-mask__inner {
+    transition: opacity 200ms ease;
+    transform: none !important;
+  }
+  .section-reveal { opacity: 1; }
+  .line-mask__inner { transform: none; }
+}
+
+/* Focus styles */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent-earth);
+  outline-offset: 4px;
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+
+/* Contact page specific */
+.contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--space-section) var(--gutter);
+}
+
+.contact-address {
+  text-align: center;
+  padding: 60px var(--gutter);
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* 404 page */
+.page-404 {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-section) var(--gutter);
+}
+
+.page-404 .statement-block { padding: 0; }
+
+/* Architecture page text columns */
+.text-column {
+  padding: var(--space-section) var(--gutter);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.text-column--left { padding-right: 50%; }
+.text-column--right { padding-left: 50%; }
+
+@media (max-width: 767px) {
+  .text-column--left,
+  .text-column--right { padding: var(--space-section) var(--gutter); }
+}
+
+.text-column .eyebrow { margin-bottom: 16px; }
+.text-column .h2 { margin-bottom: 24px; }
+.text-column .body-text { margin-bottom: 20px; }
+
+/* What's on page */
+.whats-on-hero {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 500px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.whats-on-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.whats-on-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.whats-on-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+  z-index: 2;
+}
+
+.whats-on-hero__content {
+  position: relative;
+  z-index: 3;
+  padding: 0 var(--gutter) 60px;
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Villas page */
+.villas-intro {
+  padding: var(--space-section) var(--gutter);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.villas-intro .h2 { margin-bottom: 20px; }
+.villas-intro .body-text { max-width: 50ch; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="header" id="header" role="banner">
+  <div class="header__left">
+    <button class="hamburger" id="menuTrigger" aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
+      <span></span>
+      <span></span>
+    </button>
+    <a href="#" class="wordmark" data-page="home">Valmora</a>
+  </div>
+  <nav class="header__center" aria-label="Main navigation">
+    <a href="#" data-page="home">Hotel</a>
+    <a href="#" data-page="villas">Villas</a>
+    <a href="#" data-page="architecture">Atelier</a>
+  </nav>
+  <div class="header__right">
+    <button class="lang-trigger" aria-label="Change language">EN</button>
+    <button class="book-pill" id="bookTrigger" aria-label="Book a stay">Book</button>
+  </div>
+</header>
+
+<!-- ============================================================
+     OVERLAYS
+     ============================================================ -->
+
+<!-- Menu Overlay -->
+<div class="overlay menu-overlay" id="menuOverlay" role="dialog" aria-modal="true" aria-label="Site menu">
+  <button class="overlay__close" id="menuClose" aria-label="Close menu">Close</button>
+  <div class="overlay__inner">
+    <div class="menu-group">
+      <span class="menu-group__num">01</span>
+      <h2 class="menu-group__title">Stay</h2>
+      <p class="menu-group__subtitle">Life at Valmora</p>
+      <ul class="menu-group__links">
+        <li><a href="#" data-page="home">The Quinta</a></li>
+        <li><a href="#" data-page="home">The Rooms</a></li>
+        <li><a href="#" data-page="villas">Villas to Rent</a></li>
+        <li><a href="#" data-page="home">Eat & Drink</a></li>
+        <li><a href="#" data-page="home">Bathhouse & River</a></li>
+        <li><a href="#" data-page="home">Experiences</a></li>
+        <li><a href="#" data-page="home">Seasonal Offers</a></li>
+      </ul>
+    </div>
+    <div class="menu-group">
+      <span class="menu-group__num">02</span>
+      <h2 class="menu-group__title">Valmora</h2>
+      <p class="menu-group__subtitle">Learn about</p>
+      <ul class="menu-group__links">
+        <li><a href="#" data-page="home">Valmora DNA</a></li>
+        <li><a href="#" data-page="architecture">Architecture & Craft</a></li>
+        <li><a href="#" data-page="home">The Vineyard</a></li>
+        <li><a href="#" data-page="home">The Land</a></li>
+        <li><a href="#" data-page="home">Horses</a></li>
+        <li><a href="#" data-page="home">Journal</a></li>
+        <li><a href="#" data-page="home">Own a House</a></li>
+      </ul>
+    </div>
+    <div class="menu-group">
+      <span class="menu-group__num">03</span>
+      <h2 class="menu-group__title">Atelier</h2>
+      <p class="menu-group__subtitle">Objects from the estate</p>
+      <ul class="menu-group__links">
+        <li><a href="#" data-page="architecture">Visit the shop →</a></li>
+      </ul>
+    </div>
+    <div class="menu-secondary">
+      <a href="#" data-page="whatson">What's on</a>
+      <a href="#">Celebrations</a>
+      <a href="#">Careers</a>
+      <a href="#" data-page="contact">Contact</a>
+    </div>
+    <div class="menu-bottom">
+      <div>
+        <a href="#" style="font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft);text-decoration:none;margin-right:24px;">EN</a>
+        <a href="#" style="font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft);text-decoration:none;margin-right:24px;">PT</a>
+        <a href="#" style="font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft);text-decoration:none;margin-right:24px;">FR</a>
+        <a href="#" style="font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft);text-decoration:none;">DE</a>
+      </div>
+      <div>
+        <a href="#" style="font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft);text-decoration:none;margin-right:24px;">Instagram</a>
+        <a href="#" style="font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft);text-decoration:none;margin-right:24px;">Journal</a>
+        <a href="#" style="font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft);text-decoration:none;">Vimeo</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Overlay -->
+<div class="overlay" id="bookingOverlay" role="dialog" aria-modal="true" aria-label="Book a stay">
+  <button class="overlay__close" id="bookingClose" aria-label="Close booking">Close</button>
+  <div class="overlay__inner">
+    <h2 class="h2" style="text-align:center;margin-bottom:60px;">Stay at Valmora</h2>
+    <div class="booking-blocks">
+      <div class="booking-block">
+        <span class="booking-block__num">01</span>
+        <h3 class="booking-block__title">Book a room</h3>
+        <div class="booking-block__links">
+          <a href="#" class="label-link">Book online</a>
+          <a href="#" class="label-link">Contact us</a>
+        </div>
+      </div>
+      <div class="booking-block">
+        <span class="booking-block__num">02</span>
+        <h3 class="booking-block__title">Rent a villa</h3>
+        <div class="booking-block__links">
+          <a href="#" class="label-link">Book online</a>
+          <a href="#" class="label-link">Contact us</a>
+        </div>
+      </div>
+      <div class="booking-block">
+        <span class="booking-block__num">03</span>
+        <h3 class="booking-block__title">Reserve a table</h3>
+        <div class="booking-block__links">
+          <a href="#" class="label-link">River Terrace</a>
+          <a href="#" class="label-link">The Wine Room</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Newsletter Overlay -->
+<div class="overlay" id="newsletterOverlay" role="dialog" aria-modal="true" aria-label="Newsletter signup">
+  <button class="overlay__close" id="newsletterClose" aria-label="Close newsletter">Close</button>
+  <div class="overlay__inner">
+    <div id="newsletterFormContainer">
+      <h2 class="h2" style="text-align:center;margin-bottom:20px;">Join us</h2>
+      <p class="body-text" style="text-align:center;margin-bottom:60px;">Stories from the estate, with the seasons</p>
+      <form class="newsletter-form" id="newsletterForm" novalidate>
+        <div class="form-field">
+          <label for="nlFirstName">First name *</label>
+          <input type="text" id="nlFirstName" name="firstName" required>
+        </div>
+        <div class="form-field">
+          <label for="nlLastName">Last name *</label>
+          <input type="text" id="nlLastName" name="lastName" required>
+        </div>
+        <div class="form-field">
+          <label for="nlEmail">Email *</label>
+          <input type="email" id="nlEmail" name="email" required>
+        </div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="interest" value="hotel"> Hotel & Villas</label>
+          <label><input type="checkbox" name="interest" value="atelier"> Atelier</label>
+        </div>
+        <p class="consent-line">By subscribing, you agree to our <a href="#">privacy policy</a></p>
+        <button type="submit" class="submit-pill">Subscribe</button>
+      </form>
+    </div>
+    <div class="newsletter-success" id="newsletterSuccess">
+      <h4 class="h4" style="margin-bottom:16px;">Thank you for joining us</h4>
+      <p class="body-text">Stories from the estate will reach you with the seasons</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE: HOME
+     ============================================================ -->
+<main class="page active" id="page-home" data-page="home">
+
+  <!-- Module 1: Hero-Cinema -->
+  <section class="hero-cinema section-reveal" aria-label="Hero">
+    <div class="hero-cinema__media">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80" alt="Dawn mist over terraced vineyard hills in northern Portugal" loading="eager">
+    </div>
+    <div class="hero-cinema__scrim"></div>
+    <div class="hero-cinema__content">
+      <p class="eyebrow hero-cinema__eyebrow">A private estate in the Douro hills</p>
+      <h1 class="h1 hero-cinema__title">Three centuries in the keeping</h1>
+    </div>
+    <button class="hero-cinema__sound" id="soundToggle" aria-label="Toggle sound">Sound on</button>
+    <span class="hero-cinema__scroll">Scroll</span>
+  </section>
+
+  <!-- Module 2: Pillar-Panel 01 -->
+  <section class="pillar-panel section-reveal" aria-label="Stay">
+    <div class="pillar-panel__media">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80" alt="Quinta facade at golden hour, weathered stone walls warm in evening light" loading="lazy">
+    </div>
+    <div class="pillar-panel__scrim"></div>
+    <div class="pillar-panel__content">
+      <p class="eyebrow pillar-panel__eyebrow">An estate of river, vine and stone</p>
+      <h3 class="h3 pillar-panel__title">Stay</h3>
+      <p class="pillar-panel__line">The quinta, the farmhouses and the slow life between them</p>
+      <div class="pillar-panel__links">
+        <a href="#">Stay at the Quinta</a>
+        <a href="#" data-page="villas">Rent a Villa</a>
+      </div>
+    </div>
+    <span class="giant-numeral pillar-panel__numeral">01</span>
+  </section>
+
+  <!-- Module 3: Pillar-Panel 02 -->
+  <section class="pillar-panel section-reveal" aria-label="Design">
+    <div class="pillar-panel__media">
+      <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1920&q=80" alt="Hands shaping clay on a potter's wheel in warm studio light" loading="lazy">
+    </div>
+    <div class="pillar-panel__scrim"></div>
+    <div class="pillar-panel__content">
+      <p class="eyebrow pillar-panel__eyebrow">The Valmora studio</p>
+      <h3 class="h3 pillar-panel__title">Design</h3>
+      <p class="pillar-panel__line">Thirty years of building, restoring and making, all under one roof</p>
+      <div class="pillar-panel__links">
+        <a href="#" data-page="architecture">Read more</a>
+      </div>
+    </div>
+    <span class="giant-numeral pillar-panel__numeral">02</span>
+  </section>
+
+  <!-- Module 4: Pillar-Panel 03 -->
+  <section class="pillar-panel section-reveal" aria-label="Atelier">
+    <div class="pillar-panel__media">
+      <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1920&q=80" alt="Ceramics and woven linen arranged on a weathered timber table" loading="lazy">
+    </div>
+    <div class="pillar-panel__scrim"></div>
+    <div class="pillar-panel__content">
+      <p class="eyebrow pillar-panel__eyebrow">Things we make, things we keep</p>
+      <h3 class="h3 pillar-panel__title">Atelier</h3>
+      <p class="pillar-panel__line">Objects born on the estate and shaped with kindred hands</p>
+      <div class="pillar-panel__links">
+        <a href="#" data-page="architecture">Discover the Atelier</a>
+      </div>
+    </div>
+    <span class="giant-numeral pillar-panel__numeral">03</span>
+  </section>
+
+  <!-- Module 5: Statement-Block -->
+  <section class="statement-block section-reveal" aria-label="Valmora DNA">
+    <p class="eyebrow statement-block__eyebrow">valmora dna</p>
+    <p class="statement-block__statement">Valmora is a living estate, held by one family for three centuries — farmers, builders and keepers of the land that is their home. What guides us has not changed: give back more than is taken, build only what belongs, and let the seasons set the pace</p>
+    <p class="eyebrow statement-block__eyebrow statement-block__eyebrow--bottom">valmora dna</p>
+  </section>
+
+  <!-- Module 6: Square-Overlay -->
+  <section class="square-overlay section-reveal" aria-label="About Valmora">
+    <div class="square-overlay__image">
+      <img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=800&q=80" alt="Stone farmhouse nestled among ancient olive trees" loading="lazy">
+    </div>
+    <div class="square-overlay__text">
+      <p class="eyebrow">Where it began</p>
+      <h2 class="h2">About & the Valmora story</h2>
+      <p class="body-text">Twenty-nine farmhouses stand across these hills, many once open to the sky. One by one they have been brought back — stone by stone, room by room — by the family and the craftspeople who work beside them</p>
+      <a href="#" class="label-link">Discover more</a>
+    </div>
+  </section>
+
+  <!-- Module 7: Journal-Feature -->
+  <section class="journal-feature section-reveal" aria-label="Journal">
+    <p class="eyebrow journal-feature__eyebrow">August 2026</p>
+    <h2 class="h2 journal-feature__title">We love our new house, Miradouro</h2>
+    <p class="journal-feature__teaser">Highest of the farmhouses, looking down the whole run of the valley to the river</p>
+    <a href="#" class="label-link journal-feature__link">Read more</a>
+    <div class="journal-feature__image">
+      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80" alt="Restored farmhouse Miradouro perched on a terraced hillside overlooking the Douro valley" loading="lazy">
+    </div>
+  </section>
+
+  <!-- Module 8: Collage-Cluster -->
+  <section class="collage-cluster section-reveal" aria-label="Atelier objects">
+    <div class="collage-cluster__images">
+      <div class="collage-cluster__img" style="width:25%;height:300px;left:5%;top:10%;">
+        <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=400&q=80" alt="Hand-thrown ceramic bowl with warm glaze" loading="lazy">
+      </div>
+      <div class="collage-cluster__img" style="width:20%;height:250px;left:35%;top:5%;">
+        <img src="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=400&q=80" alt="Woven linen throw in natural oatmeal" loading="lazy">
+      </div>
+      <div class="collage-cluster__img" style="width:22%;height:280px;right:10%;top:15%;">
+        <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400&q=80" alt="Olive wood cutting board with natural grain" loading="lazy">
+      </div>
+      <div class="collage-cluster__img" style="width:18%;height:220px;left:15%;top:45%;">
+        <img src="https://images.unsplash.com/photo-1581783342308-f792ca438919?w=400&q=80" alt="Hand-dyed wool yarn in earth tones" loading="lazy">
+      </div>
+      <div class="collage-cluster__img" style="width:24%;height:260px;right:20%;top:50%;">
+        <img src="https://images.unsplash.com/photo-1596162954151-cdcb4c0f70a8?w=400&q=80" alt="Terracotta vessels drying on wooden shelves" loading="lazy">
+      </div>
+      <div class="collage-cluster__img" style="width:20%;height:240px;left:45%;top:70%;">
+        <img src="https://images.unsplash.com/photo-1612196808214-b7e239e5bbae?w=400&q=80" alt="Brass candleholder with patina" loading="lazy">
+      </div>
+    </div>
+    <div class="collage-cluster__text">
+      <p class="eyebrow">Things we make, things we keep</p>
+      <h4 class="h4">Valmora Atelier</h4>
+      <a href="#" class="label-link">Discover the Atelier</a>
+    </div>
+  </section>
+
+  <!-- Module 9: Index-List — "What's on" -->
+  <section class="index-list section-reveal" aria-label="What's on">
+    <p class="index-list__intro">Gatherings, harvests and quiet spectacles across the seasons</p>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" alt="Long outdoor dining table set for harvest dinner" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Sep 12–18 · Events</span>
+        <span class="index-row__title">The Harvest Table Returns</span>
+      </div>
+      <span class="index-row__num">01</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&q=80" alt="Intimate candlelit room prepared for fado evening" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Sep 26 · Events</span>
+        <span class="index-row__title">An Evening of Fado at the Quinta</span>
+      </div>
+      <span class="index-row__num">02</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1474979266404-7cadd938c34e?w=200&q=80" alt="Traditional olive press with stone mill and golden oil" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Nov 2–8 · Estate life</span>
+        <span class="index-row__title">The Olive Pressing, Open to All</span>
+      </div>
+      <span class="index-row__num">03</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&q=80" alt="Outdoor cinema screen among cork oak trees at dusk" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Jun–Sep · Events</span>
+        <span class="index-row__title">Cinema Under the Cork Oaks</span>
+      </div>
+      <span class="index-row__num">04</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" alt="Long lunch table by a fireplace in winter light" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Dec–Feb · Only at Valmora</span>
+        <span class="index-row__title">A Winter of Long Lunches</span>
+      </div>
+      <span class="index-row__num">05</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <div style="margin-top:40px;">
+      <a href="#" data-page="whatson" class="label-link">Discover all</a>
+    </div>
+  </section>
+
+  <!-- Module 10: Plate-Full -->
+  <section class="plate-full section-reveal" aria-label="Our natural ground">
+    <div class="plate-full__frame" id="plateRiver">
+      <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80" alt="River bend in morning mist through terraced hills and wild wood" loading="lazy">
+    </div>
+    <div class="plate-full__caption">
+      <span class="eyebrow">our natural ground</span>
+      <span class="plate-full__caption-text">Two thousand nine hundred hectares of terrace, meadow and wild wood</span>
+    </div>
+  </section>
+
+  <!-- Module 11: Diptych-5050 + text column — "Eat & Drink" -->
+  <section aria-label="Eat and Drink">
+    <div class="diptych section-reveal">
+      <div class="diptych__image">
+        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80" alt="Garden vegetables and herbs freshly gathered at dawn" loading="lazy">
+      </div>
+      <div class="diptych__image">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80" alt="Long table set for outdoor lunch under vine canopy" loading="lazy">
+      </div>
+    </div>
+    <div class="diptych__text section-reveal">
+      <h2 class="h2">Eat & Drink</h2>
+      <p class="body-text">The kitchens cook from the gardens, the vineyard and the river valley around them. What is served was growing this morning</p>
+      <a href="#" class="label-link">Discover more</a>
+    </div>
+  </section>
+
+  <!-- Module 12: Parallax-Pair — "Bathhouse & River" -->
+  <section class="parallax-pair section-reveal" aria-label="Bathhouse and River">
+    <div class="parallax-pair__large" id="parallaxLarge">
+      <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80" alt="Riverside bathhouse pavilion with steam rising in cool morning air" loading="lazy">
+    </div>
+    <div class="parallax-pair__small" id="parallaxSmall">
+      <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Stone pool filled with clear river water, surrounded by wild grasses" loading="lazy">
+    </div>
+    <div class="parallax-pair__text">
+      <h2 class="h2">Bathhouse & river</h2>
+      <p class="body-text">Steam, cold water, long light — and the slow rituals in between</p>
+      <a href="#" class="label-link">Discover more</a>
+    </div>
+  </section>
+
+  <!-- Module 13: Pillar-Panel (no numeral) — "Own a house" -->
+  <section class="pillar-panel section-reveal" aria-label="Own a house">
+    <div class="pillar-panel__media">
+      <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1920&q=80" alt="Restored stone farmhouse with timber shutters in terraced landscape" loading="lazy">
+    </div>
+    <div class="pillar-panel__scrim"></div>
+    <div class="pillar-panel__content">
+      <h2 class="h2" style="color:var(--ground);margin-bottom:12px;">Own a house</h2>
+      <p class="pillar-panel__line">Some begin with a ruin, some with a house already brought to life</p>
+      <div class="pillar-panel__links">
+        <a href="#">Own a house</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 14: Mega-Footer -->
+  <footer class="mega-footer" role="contentinfo">
+    <div class="mega-footer__grid">
+      <div class="footer-col">
+        <p class="footer-col__label">Stay</p>
+        <ul class="footer-col__links">
+          <li><a href="#">The Quinta</a></li>
+          <li><a href="#">The Rooms</a></li>
+          <li><a href="#" data-page="villas">Villas to Rent</a></li>
+          <li><a href="#">Eat & Drink</a></li>
+          <li><a href="#">Bathhouse & River</a></li>
+          <li><a href="#">Experiences</a></li>
+          <li><a href="#">Seasonal Offers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Valmora</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Valmora DNA</a></li>
+          <li><a href="#" data-page="architecture">Architecture & Craft</a></li>
+          <li><a href="#">The Vineyard</a></li>
+          <li><a href="#">The Land</a></li>
+          <li><a href="#">Horses</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Own a House</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Atelier</p>
+        <ul class="footer-col__links">
+          <li><a href="#" data-page="architecture">Visit the shop</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Newsletter</p>
+        <p class="body-text" style="margin-bottom:20px;font-size:14px;">Stories from the estate, with the seasons</p>
+        <button class="submit-pill" id="newsletterTrigger">Sign up</button>
+      </div>
+    </div>
+    <div class="footer-wordmark">VALMORA</div>
+    <div class="footer-legal">
+      <p class="footer-legal__text">Valmora and its designs are protected marks of Valmora Lda · Vila Real, Portugal</p>
+      <div class="footer-legal__links">
+        <a href="#">Privacy policy</a>
+        <a href="#">Cookies policy</a>
+        <a href="#">Terms</a>
+        <a href="#">EN</a>
+        <a href="#">PT</a>
+        <a href="#">FR</a>
+        <a href="#">DE</a>
+        <a href="#">Instagram</a>
+        <a href="#">Journal</a>
+        <a href="#">Vimeo</a>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ============================================================
+     PAGE: ARCHITECTURE & CRAFT
+     ============================================================ -->
+<main class="page" id="page-architecture" data-page="architecture">
+
+  <!-- Hero-Cinema -->
+  <section class="hero-cinema section-reveal" aria-label="Architecture and Craft hero">
+    <div class="hero-cinema__media">
+      <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&q=80" alt="Morning light moving through a restored interior, stone walls and timber beams" loading="eager">
+    </div>
+    <div class="hero-cinema__scrim"></div>
+    <div class="hero-cinema__content">
+      <h1 class="h1 hero-cinema__title">Architecture & Craft</h1>
+    </div>
+    <button class="hero-cinema__sound" aria-label="Toggle sound">Sound on</button>
+  </section>
+
+  <!-- Text column left -->
+  <section class="text-column text-column--left section-reveal" aria-label="Architecture">
+    <p class="eyebrow">How we build</p>
+    <h2 class="h2">Architecture</h2>
+    <p class="body-text">Every project here starts with the land itself. Of the twenty-nine farmhouses standing when the work began, most were little more than walls and sky. Twenty-two have now been brought back</p>
+    <p class="body-text">For three decades the estate studio has held to the same habits: reclaimed materials where they can be found, the old techniques where they still serve, and the quiet machinery of modern comfort hidden well out of sight</p>
+  </section>
+
+  <!-- Plate-Full -->
+  <section class="plate-full section-reveal" aria-label="Finished farmhouse">
+    <div class="plate-full__frame">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80" alt="Finished farmhouse returned to its hillside, stone walls blending with terraced landscape" loading="lazy">
+    </div>
+    <div class="plate-full__caption">
+      <span class="eyebrow">A house returned to its hill</span>
+    </div>
+  </section>
+
+  <!-- Square-Overlay -->
+  <section class="square-overlay section-reveal" aria-label="Materials">
+    <div class="square-overlay__image">
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="Weathered stone wall with hand-washed lime finish catching afternoon light" loading="lazy">
+    </div>
+    <div class="square-overlay__text">
+      <p class="eyebrow">Materials</p>
+      <h2 class="h2">Working with what the land gives</h2>
+      <p class="body-text">Stone from the old terraces, chestnut from the wood, lime washed by hand — new work is folded into old until the seam disappears</p>
+      <a href="#" class="label-link">See the houses</a>
+    </div>
+  </section>
+
+  <!-- Parallax-Pair -->
+  <section class="parallax-pair section-reveal" aria-label="Craft details">
+    <div class="parallax-pair__large">
+      <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80" alt="Finished stair hall with chestnut handrail and stone walls" loading="lazy">
+    </div>
+    <div class="parallax-pair__small">
+      <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=600&q=80" alt="Hand planing a length of chestnut timber in the workshop" loading="lazy">
+    </div>
+  </section>
+
+  <!-- Gallery-Drag (7 interiors) -->
+  <section class="gallery-drag section-reveal" aria-label="Interior gallery">
+    <div class="gallery-drag__strip" id="archGallery">
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?w=800&q=80" alt="Living room with stone fireplace and linen sofas" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600585154363-67ebad0ef614?w=800&q=80" alt="Kitchen with reclaimed timber counters and copper pots" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80" alt="Bedroom with linen bedding and shuttered windows" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80" alt="Bathroom with stone basin and brass fixtures" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&q=80" alt="Library with floor-to-ceiling timber shelves" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&q=80" alt="Dining room with long table and vineyard view" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80" alt="Entrance hall with vaulted stone ceiling" loading="lazy"></div>
+    </div>
+    <div class="gallery-drag__cursor" id="archCursor">Drag</div>
+  </section>
+
+  <!-- Text column right -->
+  <section class="text-column text-column--right section-reveal" aria-label="Interior craft">
+    <p class="eyebrow">Inside</p>
+    <h2 class="h2">Interior craft</h2>
+    <p class="body-text">The buildings and their rooms are drawn by the same hand, so every table, latch and lamp knows the wall it was made for</p>
+    <p class="body-text">Most of what fills the houses is knowledge within a day's drive — by the weavers, smiths and potters the studio has worked beside for a generation</p>
+  </section>
+
+  <!-- Diptych-5050 -->
+  <section class="diptych section-reveal" aria-label="Interior details">
+    <div class="diptych__image">
+      <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80" alt="Detail of hand-forged iron door latch on aged timber door" loading="lazy">
+    </div>
+    <div class="diptych__image">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Terracotta floor tiles worn smooth by centuries of use" loading="lazy">
+    </div>
+  </section>
+
+  <!-- Statement-Block -->
+  <section class="statement-block section-reveal" aria-label="The long view">
+    <p class="eyebrow statement-block__eyebrow">the long view</p>
+    <p class="statement-block__statement">The team that draws the houses also keeps them, year after year — and that is where the knowledge lives: in what lasts, what mellows and what was worth doing slowly</p>
+  </section>
+
+  <!-- Gallery-Drag (objects) -->
+  <section class="gallery-drag section-reveal" aria-label="Atelier objects">
+    <div class="gallery-drag__strip" id="objectGallery">
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800&q=80" alt="Hand-thrown ceramic vase with volcanic glaze" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&q=80" alt="Heavy linen table runner in natural ecru" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&q=80" alt="Olive wood serving board with live edge" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1612196808214-b7e239e5bbae?w=800&q=80" alt="Brass desk lamp with adjustable arm" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1581783342308-f792ca438919?w=800&q=80" alt="Hand-woven wool blanket in ochre and grey" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1596162954151-cdcb4c0f70a8?w=800&q=80" alt="Set of terracotta cooking pots with lids" loading="lazy"></div>
+    </div>
+    <div class="gallery-drag__cursor" id="objectCursor">Drag</div>
+  </section>
+
+  <!-- Closing Square-Overlay -->
+  <section class="square-overlay square-overlay--reverse section-reveal" aria-label="Atelier link">
+    <div class="square-overlay__image">
+      <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80" alt="Collection of estate-made objects arranged on a stone ledge" loading="lazy">
+    </div>
+    <div class="square-overlay__text">
+      <p class="eyebrow">Things we make</p>
+      <h2 class="h2">Valmora Atelier</h2>
+      <p class="body-text">Objects born on the estate and shaped with kindred hands</p>
+      <a href="#" class="label-link">Discover the Atelier</a>
+    </div>
+  </section>
+
+  <!-- Mega-Footer -->
+  <footer class="mega-footer" role="contentinfo">
+    <div class="mega-footer__grid">
+      <div class="footer-col">
+        <p class="footer-col__label">Stay</p>
+        <ul class="footer-col__links">
+          <li><a href="#">The Quinta</a></li>
+          <li><a href="#">The Rooms</a></li>
+          <li><a href="#" data-page="villas">Villas to Rent</a></li>
+          <li><a href="#">Eat & Drink</a></li>
+          <li><a href="#">Bathhouse & River</a></li>
+          <li><a href="#">Experiences</a></li>
+          <li><a href="#">Seasonal Offers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Valmora</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Valmora DNA</a></li>
+          <li><a href="#" data-page="architecture">Architecture & Craft</a></li>
+          <li><a href="#">The Vineyard</a></li>
+          <li><a href="#">The Land</a></li>
+          <li><a href="#">Horses</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Own a House</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Atelier</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Visit the shop</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Newsletter</p>
+        <p class="body-text" style="margin-bottom:20px;font-size:14px;">Stories from the estate, with the seasons</p>
+        <button class="submit-pill" onclick="openNewsletter()">Sign up</button>
+      </div>
+    </div>
+    <div class="footer-wordmark">VALMORA</div>
+    <div class="footer-legal">
+      <p class="footer-legal__text">Valmora and its designs are protected marks of Valmora Lda · Vila Real, Portugal</p>
+      <div class="footer-legal__links">
+        <a href="#">Privacy policy</a>
+        <a href="#">Cookies policy</a>
+        <a href="#">Terms</a>
+        <a href="#">EN</a>
+        <a href="#">PT</a>
+        <a href="#">FR</a>
+        <a href="#">DE</a>
+        <a href="#">Instagram</a>
+        <a href="#">Journal</a>
+        <a href="#">Vimeo</a>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ============================================================
+     PAGE: WHAT'S ON
+     ============================================================ -->
+<main class="page" id="page-whatson" data-page="whatson">
+
+  <!-- Hero-Cinema (photo) -->
+  <section class="whats-on-hero section-reveal" aria-label="What's on">
+    <div class="whats-on-hero__media">
+      <img src="https://images.unsplash.com/photo-1533174072545-7a32b9f2f7f9?w=1920&q=80" alt="Evening gathering on the estate, long tables lit by candlelight under ancient trees" loading="eager">
+    </div>
+    <div class="whats-on-hero__scrim"></div>
+    <div class="whats-on-hero__content">
+      <p class="eyebrow" style="color:var(--ground);opacity:0.8;margin-bottom:16px;">Gatherings and seasons</p>
+      <h1 class="h1" style="color:var(--ground);">What's on</h1>
+    </div>
+  </section>
+
+  <!-- Statement-Block -->
+  <section class="statement-block section-reveal" aria-label="Introduction">
+    <p class="statement-block__statement" style="font-size:clamp(20px,2.5vw,32px);">Gatherings, harvests and quiet spectacles across the seasons</p>
+  </section>
+
+  <!-- Index-List (8 items) -->
+  <section class="index-list section-reveal" aria-label="Events listing">
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80" alt="Long outdoor dining table set for harvest dinner under string lights" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Sep 12–18 · Events</span>
+        <span class="index-row__title">The Harvest Table Returns</span>
+      </div>
+      <span class="index-row__num">01</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&q=80" alt="Intimate candlelit room with guitar prepared for fado evening" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Sep 26 · Events</span>
+        <span class="index-row__title">An Evening of Fado at the Quinta</span>
+      </div>
+      <span class="index-row__num">02</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1474979266404-7cadd938c34e?w=200&q=80" alt="Traditional stone olive press with golden oil flowing" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Nov 2–8 · Estate life</span>
+        <span class="index-row__title">The Olive Pressing, Open to All</span>
+      </div>
+      <span class="index-row__num">03</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&q=80" alt="Outdoor cinema screen set among cork oak trees at twilight" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Jun–Sep · Events</span>
+        <span class="index-row__title">Cinema Under the Cork Oaks</span>
+      </div>
+      <span class="index-row__num">04</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" alt="Long lunch table by a fireplace in warm winter light" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Dec–Feb · Only at Valmora</span>
+        <span class="index-row__title">A Winter of Long Lunches</span>
+      </div>
+      <span class="index-row__num">05</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&q=80" alt="Spring foraging walk through wild meadows and woodland" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Mar–May · Estate life</span>
+        <span class="index-row__title">Foraging with the Kitchen Gardeners</span>
+      </div>
+      <span class="index-row__num">06</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=200&q=80" alt="Wine tasting in the estate cellar among oak barrels" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Year-round · Experiences</span>
+        <span class="index-row__title">Tastings in the Barrel Room</span>
+      </div>
+      <span class="index-row__num">07</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+
+    <a href="#" class="index-row">
+      <div class="index-row__thumb">
+        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=200&q=80" alt="Horseback riding through tall grass on the estate hills" loading="lazy">
+      </div>
+      <div class="index-row__content">
+        <span class="index-row__meta">Year-round · Experiences</span>
+        <span class="index-row__title">Rides Through the Terraces</span>
+      </div>
+      <span class="index-row__num">08</span>
+      <span class="index-row__arrow">Discover more</span>
+    </a>
+  </section>
+
+  <!-- Mega-Footer -->
+  <footer class="mega-footer" role="contentinfo">
+    <div class="mega-footer__grid">
+      <div class="footer-col">
+        <p class="footer-col__label">Stay</p>
+        <ul class="footer-col__links">
+          <li><a href="#">The Quinta</a></li>
+          <li><a href="#">The Rooms</a></li>
+          <li><a href="#" data-page="villas">Villas to Rent</a></li>
+          <li><a href="#">Eat & Drink</a></li>
+          <li><a href="#">Bathhouse & River</a></li>
+          <li><a href="#">Experiences</a></li>
+          <li><a href="#">Seasonal Offers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Valmora</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Valmora DNA</a></li>
+          <li><a href="#" data-page="architecture">Architecture & Craft</a></li>
+          <li><a href="#">The Vineyard</a></li>
+          <li><a href="#">The Land</a></li>
+          <li><a href="#">Horses</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Own a House</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Atelier</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Visit the shop</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Newsletter</p>
+        <p class="body-text" style="margin-bottom:20px;font-size:14px;">Stories from the estate, with the seasons</p>
+        <button class="submit-pill" onclick="openNewsletter()">Sign up</button>
+      </div>
+    </div>
+    <div class="footer-wordmark">VALMORA</div>
+    <div class="footer-legal">
+      <p class="footer-legal__text">Valmora and its designs are protected marks of Valmora Lda · Vila Real, Portugal</p>
+      <div class="footer-legal__links">
+        <a href="#">Privacy policy</a>
+        <a href="#">Cookies policy</a>
+        <a href="#">Terms</a>
+        <a href="#">EN</a>
+        <a href="#">PT</a>
+        <a href="#">FR</a>
+        <a href="#">DE</a>
+        <a href="#">Instagram</a>
+        <a href="#">Journal</a>
+        <a href="#">Vimeo</a>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ============================================================
+     PAGE: VILLAS TO RENT
+     ============================================================ -->
+<main class="page" id="page-villas" data-page="villas">
+
+  <!-- Hero-Cinema -->
+  <section class="hero-cinema section-reveal" aria-label="Villas hero" style="height:70vh;min-height:500px;">
+    <div class="hero-cinema__media">
+      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80" alt="Collection of restored stone farmhouses nestled among terraced vineyards" loading="eager">
+    </div>
+    <div class="hero-cinema__scrim"></div>
+    <div class="hero-cinema__content">
+      <p class="eyebrow hero-cinema__eyebrow">Private houses across the estate</p>
+      <h1 class="h1 hero-cinema__title">Villas to Rent</h1>
+    </div>
+  </section>
+
+  <!-- Intro text column -->
+  <section class="villas-intro section-reveal" aria-label="Introduction">
+    <h2 class="h2">Four houses, each with its own view</h2>
+    <p class="body-text">Each farmhouse has been returned to life over years of careful work. They share the same quiet standards — stone, timber, linen, and the long light of the valley — but each has its own character, its own corner of the estate</p>
+  </section>
+
+  <!-- 4x Square-Overlay alternating -->
+  <section class="square-overlay section-reveal" aria-label="Villa Miradouro">
+    <div class="square-overlay__image">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Miradouro farmhouse exterior, highest on the estate with sweeping valley views" loading="lazy">
+    </div>
+    <div class="square-overlay__text">
+      <p class="eyebrow">Highest of the four</p>
+      <h2 class="h2">Miradouro</h2>
+      <p class="body-text">Three bedrooms, a stone terrace, and a view that runs the whole length of the valley to the river bend below</p>
+      <a href="#" class="label-link">Discover more</a>
+    </div>
+  </section>
+
+  <section class="square-overlay square-overlay--reverse section-reveal" aria-label="Villa Oliveira">
+    <div class="square-overlay__image">
+      <img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=800&q=80" alt="Oliveira farmhouse surrounded by ancient olive grove and dry stone walls" loading="lazy">
+    </div>
+    <div class="square-overlay__text">
+      <p class="eyebrow">Among the old olives</p>
+      <h2 class="h2">Oliveira</h2>
+      <p class="body-text">Two bedrooms set within a grove of trees that were old when the house was first built. A shaded courtyard for the hottest afternoons</p>
+      <a href="#" class="label-link">Discover more</a>
+    </div>
+  </section>
+
+  <section class="square-overlay section-reveal" aria-label="Villa Vinha">
+    <div class="square-overlay__image">
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="Vinha farmhouse at the edge of a working vineyard terrace" loading="lazy">
+    </div>
+    <div class="square-overlay__text">
+      <p class="eyebrow">At the vineyard's edge</p>
+      <h2 class="h2">Vinha</h2>
+      <p class="body-text">Four bedrooms in the heart of the working vineyard. Wake to the sound of harvest and the smell of crushed grape on the wind</p>
+      <a href="#" class="label-link">Discover more</a>
+    </div>
+  </section>
+
+  <section class="square-overlay square-overlay--reverse section-reveal" aria-label="Villa Ribeira">
+    <div class="square-overlay__image">
+      <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80" alt="Ribeira farmhouse near the river with its own small beach and bathhouse" loading="lazy">
+    </div>
+    <div class="square-overlay__text">
+      <p class="eyebrow">Closest to the water</p>
+      <h2 class="h2">Ribeira</h2>
+      <p class="body-text">Two bedrooms and a private path to the river. A small stone beach and the sound of water moving over rock</p>
+      <a href="#" class="label-link">Discover more</a>
+    </div>
+  </section>
+
+  <!-- Gallery-Drag -->
+  <section class="gallery-drag section-reveal" aria-label="Villa gallery">
+    <div class="gallery-drag__strip" id="villaGallery">
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?w=800&q=80" alt="Villa living room with stone walls and linen sofas" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600585154363-67ebad0ef614?w=800&q=80" alt="Villa kitchen with reclaimed timber and copper cookware" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&q=80" alt="Villa dining terrace overlooking vineyard terraces" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80" alt="Villa bathroom with stone basin and brass fixtures" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80" alt="Villa bedroom with shuttered windows and valley view" loading="lazy"></div>
+      <div class="gallery-drag__item"><img src="https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&q=80" alt="Villa library with timber shelves and reading chair" loading="lazy"></div>
+    </div>
+    <div class="gallery-drag__cursor" id="villaCursor">Drag</div>
+  </section>
+
+  <!-- Mega-Footer -->
+  <footer class="mega-footer" role="contentinfo">
+    <div class="mega-footer__grid">
+      <div class="footer-col">
+        <p class="footer-col__label">Stay</p>
+        <ul class="footer-col__links">
+          <li><a href="#">The Quinta</a></li>
+          <li><a href="#">The Rooms</a></li>
+          <li><a href="#" data-page="villas">Villas to Rent</a></li>
+          <li><a href="#">Eat & Drink</a></li>
+          <li><a href="#">Bathhouse & River</a></li>
+          <li><a href="#">Experiences</a></li>
+          <li><a href="#">Seasonal Offers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Valmora</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Valmora DNA</a></li>
+          <li><a href="#" data-page="architecture">Architecture & Craft</a></li>
+          <li><a href="#">The Vineyard</a></li>
+          <li><a href="#">The Land</a></li>
+          <li><a href="#">Horses</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Own a House</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Atelier</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Visit the shop</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Newsletter</p>
+        <p class="body-text" style="margin-bottom:20px;font-size:14px;">Stories from the estate, with the seasons</p>
+        <button class="submit-pill" onclick="openNewsletter()">Sign up</button>
+      </div>
+    </div>
+    <div class="footer-wordmark">VALMORA</div>
+    <div class="footer-legal">
+      <p class="footer-legal__text">Valmora and its designs are protected marks of Valmora Lda · Vila Real, Portugal</p>
+      <div class="footer-legal__links">
+        <a href="#">Privacy policy</a>
+        <a href="#">Cookies policy</a>
+        <a href="#">Terms</a>
+        <a href="#">EN</a>
+        <a href="#">PT</a>
+        <a href="#">FR</a>
+        <a href="#">DE</a>
+        <a href="#">Instagram</a>
+        <a href="#">Journal</a>
+        <a href="#">Vimeo</a>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ============================================================
+     PAGE: CONTACT
+     ============================================================ -->
+<main class="page" id="page-contact" data-page="contact">
+
+  <section class="page-404 section-reveal" aria-label="Contact" style="min-height:40vh;padding-top:160px;">
+    <div>
+      <p class="eyebrow" style="margin-bottom:24px;text-align:center;">Write to us</p>
+      <h1 class="h1" style="text-align:center;margin-bottom:60px;">Write to us</h1>
+    </div>
+  </section>
+
+  <section class="contact-form section-reveal" aria-label="Contact form">
+    <form id="contactForm" novalidate>
+      <div class="form-field">
+        <label for="contactName">Name</label>
+        <input type="text" id="contactName" name="name" required>
+      </div>
+      <div class="form-field">
+        <label for="contactEmail">Email</label>
+        <input type="email" id="contactEmail" name="email" required>
+      </div>
+      <div class="form-field">
+        <label for="contactTopic">Topic</label>
+        <select id="contactTopic" name="topic">
+          <option value="">Select a topic</option>
+          <option value="stay">Staying at Valmora</option>
+          <option value="villa">Renting a villa</option>
+          <option value="atelier">The Atelier</option>
+          <option value="press">Press enquiry</option>
+          <option value="other">Something else</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="contactMessage">Message</label>
+        <textarea id="contactMessage" name="message" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="submit-pill">Send message</button>
+    </form>
+  </section>
+
+  <section class="contact-address section-reveal" aria-label="Estate address">
+    <p>Valmora Estate<br>Quinta de Valmora<br>5000-000 Vila Real<br>Portugal</p>
+    <p style="margin-top:16px;">+351 259 000 000<br>stay@valmora.pt</p>
+  </section>
+
+  <!-- Plate-Full -->
+  <section class="plate-full section-reveal" aria-label="Estate landscape">
+    <div class="plate-full__frame">
+      <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80" alt="Wide landscape view of the estate showing terraced hills, river bend and wild wood" loading="lazy">
+    </div>
+  </section>
+
+  <!-- Mega-Footer -->
+  <footer class="mega-footer" role="contentinfo">
+    <div class="mega-footer__grid">
+      <div class="footer-col">
+        <p class="footer-col__label">Stay</p>
+        <ul class="footer-col__links">
+          <li><a href="#">The Quinta</a></li>
+          <li><a href="#">The Rooms</a></li>
+          <li><a href="#" data-page="villas">Villas to Rent</a></li>
+          <li><a href="#">Eat & Drink</a></li>
+          <li><a href="#">Bathhouse & River</a></li>
+          <li><a href="#">Experiences</a></li>
+          <li><a href="#">Seasonal Offers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Valmora</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Valmora DNA</a></li>
+          <li><a href="#" data-page="architecture">Architecture & Craft</a></li>
+          <li><a href="#">The Vineyard</a></li>
+          <li><a href="#">The Land</a></li>
+          <li><a href="#">Horses</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Own a House</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Atelier</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Visit the shop</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Newsletter</p>
+        <p class="body-text" style="margin-bottom:20px;font-size:14px;">Stories from the estate, with the seasons</p>
+        <button class="submit-pill" onclick="openNewsletter()">Sign up</button>
+      </div>
+    </div>
+    <div class="footer-wordmark">VALMORA</div>
+    <div class="footer-legal">
+      <p class="footer-legal__text">Valmora and its designs are protected marks of Valmora Lda · Vila Real, Portugal</p>
+      <div class="footer-legal__links">
+        <a href="#">Privacy policy</a>
+        <a href="#">Cookies policy</a>
+        <a href="#">Terms</a>
+        <a href="#">EN</a>
+        <a href="#">PT</a>
+        <a href="#">FR</a>
+        <a href="#">DE</a>
+        <a href="#">Instagram</a>
+        <a href="#">Journal</a>
+        <a href="#">Vimeo</a>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ============================================================
+     PAGE: 404
+     ============================================================ -->
+<main class="page" id="page-404" data-page="404">
+  <section class="page-404 section-reveal" aria-label="Page not found">
+    <div class="statement-block">
+      <p class="eyebrow statement-block__eyebrow">This path leads back to the meadow</p>
+      <p class="statement-block__statement" style="margin:32px 0;">This path leads back to the meadow</p>
+      <a href="#" class="label-link" data-page="home">Return home</a>
+    </div>
+  </section>
+
+  <!-- Mega-Footer -->
+  <footer class="mega-footer" role="contentinfo">
+    <div class="mega-footer__grid">
+      <div class="footer-col">
+        <p class="footer-col__label">Stay</p>
+        <ul class="footer-col__links">
+          <li><a href="#">The Quinta</a></li>
+          <li><a href="#">The Rooms</a></li>
+          <li><a href="#" data-page="villas">Villas to Rent</a></li>
+          <li><a href="#">Eat & Drink</a></li>
+          <li><a href="#">Bathhouse & River</a></li>
+          <li><a href="#">Experiences</a></li>
+          <li><a href="#">Seasonal Offers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Valmora</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Valmora DNA</a></li>
+          <li><a href="#" data-page="architecture">Architecture & Craft</a></li>
+          <li><a href="#">The Vineyard</a></li>
+          <li><a href="#">The Land</a></li>
+          <li><a href="#">Horses</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Own a House</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Atelier</p>
+        <ul class="footer-col__links">
+          <li><a href="#">Visit the shop</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__label">Newsletter</p>
+        <p class="body-text" style="margin-bottom:20px;font-size:14px;">Stories from the estate, with the seasons</p>
+        <button class="submit-pill" onclick="openNewsletter()">Sign up</button>
+      </div>
+    </div>
+    <div class="footer-wordmark">VALMORA</div>
+    <div class="footer-legal">
+      <p class="footer-legal__text">Valmora and its designs are protected marks of Valmora Lda · Vila Real, Portugal</p>
+      <div class="footer-legal__links">
+        <a href="#">Privacy policy</a>
+        <a href="#">Cookies policy</a>
+        <a href="#">Terms</a>
+        <a href="#">EN</a>
+        <a href="#">PT</a>
+        <a href="#">FR</a>
+        <a href="#">DE</a>
+        <a href="#">Instagram</a>
+        <a href="#">Journal</a>
+        <a href="#">Vimeo</a>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // ==========================================================
+  // LENIS SMOOTH SCROLL
+  // ==========================================================
+  let lenis;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion && typeof Lenis !== 'undefined') {
+    lenis = new Lenis({
+      lerp: 0.08,
+      smoothWheel: true,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Connect Lenis to GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  // ==========================================================
+  // HEADER BEHAVIOR
+  // ==========================================================
+  const header = document.getElementById('header');
+  let lastScroll = 0;
+  let ticking = false;
+
+  function updateHeader() {
+    const currentScroll = window.scrollY || window.pageYOffset;
+
+    // Solid background after 100px
+    if (currentScroll > 100) {
+      header.classList.add('header--solid');
+    } else {
+      header.classList.remove('header--solid');
+    }
+
+    // Hide on scroll down, reveal on scroll up
+    if (currentScroll > lastScroll && currentScroll > 200) {
+      header.classList.add('header--hidden');
+    } else {
+      header.classList.remove('header--hidden');
+    }
+
+    lastScroll = currentScroll;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(updateHeader);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // ==========================================================
+  // OVERLAY MANAGEMENT
+  // ==========================================================
+  const menuOverlay = document.getElementById('menuOverlay');
+  const bookingOverlay = document.getElementById('bookingOverlay');
+  const newsletterOverlay = document.getElementById('newsletterOverlay');
+  const menuTrigger = document.getElementById('menuTrigger');
+  const bookTrigger = document.getElementById('bookTrigger');
+  const newsletterTrigger = document.getElementById('newsletterTrigger');
+  const menuClose = document.getElementById('menuClose');
+  const bookingClose = document.getElementById('bookingClose');
+  const newsletterClose = document.getElementById('newsletterClose');
+
+  let activeOverlay = null;
+
+  function openOverlay(overlay) {
+    if (activeOverlay) closeOverlay(activeOverlay);
+    activeOverlay = overlay;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    if (lenis) lenis.stop();
+
+    // Focus trap: focus first focusable element
+    const focusable = overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (focusable.length) focusable[0].focus();
+  }
+
+  function closeOverlay(overlay) {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    if (lenis) lenis.start();
+    activeOverlay = null;
+  }
+
+  menuTrigger.addEventListener('click', () => openOverlay(menuOverlay));
+  bookTrigger.addEventListener('click', () => openOverlay(bookingOverlay));
+  if (newsletterTrigger) newsletterTrigger.addEventListener('click', () => openOverlay(newsletterOverlay));
+
+  menuClose.addEventListener('click', () => closeOverlay(menuOverlay));
+  bookingClose.addEventListener('click', () => closeOverlay(bookingOverlay));
+  newsletterClose.addEventListener('click', () => closeOverlay(newsletterOverlay));
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && activeOverlay) {
+      closeOverlay(activeOverlay);
+    }
+  });
+
+  // Expose for inline onclick handlers
+  window.openNewsletter = function() {
+    openOverlay(newsletterOverlay);
+  };
+
+  // ==========================================================
+  // PAGE TRANSITIONS
+  // ==========================================================
+  const pages = document.querySelectorAll('.page');
+  let currentPage = 'home';
+
+  function navigateTo(pageId) {
+    if (pageId === currentPage) return;
+
+    // Fade out current
+    const currentEl = document.getElementById('page-' + currentPage);
+    const nextEl = document.getElementById('page-' + pageId);
+
+    if (!nextEl) return;
+
+    // Close any open overlays
+    if (activeOverlay) {
+      closeOverlay(activeOverlay);
+    }
+
+    // Scroll to top
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+
+    // Transition
+    if (currentEl) {
+      currentEl.style.opacity = '0';
+      setTimeout(() => {
+        currentEl.classList.remove('active');
+        currentEl.style.display = 'none';
+        nextEl.style.display = 'block';
+        // Force reflow
+        void nextEl.offsetWidth;
+        nextEl.classList.add('active');
+        nextEl.style.opacity = '1';
+        currentPage = pageId;
+        initScrollAnimations();
+      }, 400);
+    } else {
+      nextEl.classList.add('active');
+      currentPage = pageId;
+      initScrollAnimations();
+    }
+  }
+
+  // Intercept all internal links
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[data-page], button[data-page]');
+    if (link) {
+      e.preventDefault();
+      const page = link.getAttribute('data-page');
+      if (page) navigateTo(page);
+    }
+  });
+
+  // ==========================================================
+  // SCROLL ANIMATIONS (Intersection Observer)
+  // ==========================================================
+  function initScrollAnimations() {
+    const reveals = document.querySelectorAll('.page.active .section-reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    reveals.forEach(el => {
+      if (!prefersReducedMotion) {
+        el.classList.remove('visible');
+        observer.observe(el);
+      } else {
+        el.classList.add('visible');
+      }
+    });
+  }
+
+  initScrollAnimations();
+
+  // ==========================================================
+  // GSAP SCROLLTRIGGER ANIMATIONS
+  // ==========================================================
+  if (!prefersReducedMotion && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Plate-Full scale effect
+    document.querySelectorAll('.plate-full__frame').forEach(frame => {
+      const img = frame.querySelector('img');
+      if (img) {
+        gsap.fromTo(img, 
+          { scale: 1 },
+          {
+            scale: 1.06,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: frame,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            }
+          }
+        );
+      }
+    });
+
+    // Parallax-Pair
+    document.querySelectorAll('.parallax-pair').forEach(pair => {
+      const large = pair.querySelector('.parallax-pair__large');
+      const small = pair.querySelector('.parallax-pair__small');
+
+      if (large) {
+        gsap.to(large, {
+          y: '-8%',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: pair,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          }
+        });
+      }
+
+      if (small) {
+        gsap.to(small, {
+          y: '12%',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: pair,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          }
+        });
+      }
+    });
+
+    // Collage-Cluster parallax
+    document.querySelectorAll('.collage-cluster__img').forEach((img, i) => {
+      const speed = 0.05 + (i % 3) * 0.03;
+      gsap.to(img, {
+        y: `${-15 * speed * 100}%`,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: img.closest('.collage-cluster'),
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+    });
+  }
+
+  // ==========================================================
+  // GALLERY DRAG
+  // ==========================================================
+  function initGalleryDrag(galleryId, cursorId) {
+    const strip = document.getElementById(galleryId);
+    const cursor = document.getElementById(cursorId);
+    if (!strip) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let velocity = 0;
+    let rafId = null;
+
+    strip.addEventListener('mousedown', (e) => {
+      isDown = true;
+      strip.style.cursor = 'grabbing';
+      startX = e.pageX - strip.offsetLeft;
+      scrollLeft = strip.scrollLeft;
+      cancelAnimationFrame(rafId);
+    });
+
+    strip.addEventListener('mouseleave', () => {
+      isDown = false;
+      strip.style.cursor = 'grab';
+    });
+
+    strip.addEventListener('mouseup', () => {
+      isDown = false;
+      strip.style.cursor = 'grab';
+      // Inertia
+      function decelerate() {
+        if (Math.abs(velocity) > 0.5) {
+          strip.scrollLeft += velocity;
+          velocity *= 0.95;
+          rafId = requestAnimationFrame(decelerate);
+        }
+      }
+      decelerate();
+    });
+
+    strip.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - strip.offsetLeft;
+      const walk = (x - startX) * 2;
+      velocity = strip.scrollLeft - (scrollLeft - walk);
+      strip.scrollLeft = scrollLeft - walk;
+    });
+
+    // Cursor follow
+    if (cursor) {
+      strip.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 16 + 'px';
+        cursor.style.top = e.clientY + 16 + 'px';
+      });
+    }
+
+    // Touch support
+    strip.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].pageX - strip.offsetLeft;
+      scrollLeft = strip.scrollLeft;
+    }, { passive: true });
+
+    strip.addEventListener('touchmove', (e) => {
+      const x = e.touches[0].pageX - strip.offsetLeft;
+      const walk = (x - startX) * 2;
+      strip.scrollLeft = scrollLeft - walk;
+    }, { passive: true });
+  }
+
+  initGalleryDrag('archGallery', 'archCursor');
+  initGalleryDrag('objectGallery', 'objectCursor');
+  initGalleryDrag('villaGallery', 'villaCursor');
+
+  // ==========================================================
+  // NEWSLETTER FORM
+  // ==========================================================
+  const newsletterForm = document.getElementById('newsletterForm');
+  const newsletterSuccess = document.getElementById('newsletterSuccess');
+  const newsletterFormContainer = document.getElementById('newsletterFormContainer');
+
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Simple validation
+      const email = document.getElementById('nlEmail').value;
+      if (email && email.includes('@')) {
+        newsletterFormContainer.style.display = 'none';
+        newsletterSuccess.classList.add('active');
+      } else {
+        document.getElementById('nlEmail').style.borderBottomColor = '#7A4A2B';
+      }
+    });
+  }
+
+  // ==========================================================
+  // CONTACT FORM
+  // ==========================================================
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for your message. We will respond with the seasons.');
+      contactForm.reset();
+    });
+  }
+
+  // ==========================================================
+  // SOUND TOGGLE (placeholder)
+  // ==========================================================
+  const soundToggle = document.getElementById('soundToggle');
+  if (soundToggle) {
+    let soundOn = false;
+    soundToggle.addEventListener('click', () => {
+      soundOn = !soundOn;
+      soundToggle.textContent = soundOn ? 'Sound off' : 'Sound on';
+    });
+  }
+
+  // ==========================================================
+  // LINE MASK REVEAL FOR HEADLINES
+  // ==========================================================
+  function splitLines() {
+    if (prefersReducedMotion) return;
+
+    document.querySelectorAll('.page.active h1, .page.active h2, .page.active .statement-block__statement').forEach(el => {
+      if (el.dataset.split) return;
+      el.dataset.split = 'true';
+
+      const text = el.textContent;
+      const words = text.split(' ');
+      el.innerHTML = '';
+
+      // Simple line splitting by chunks
+      const charsPerLine = window.innerWidth < 768 ? 20 : 35;
+      let currentLine = '';
+      let lines = [];
+
+      words.forEach(word => {
+        if ((currentLine + word).length > charsPerLine && currentLine.length > 0) {
+          lines.push(currentLine.trim());
+          currentLine = word + ' ';
+        } else {
+          currentLine += word + ' ';
+        }
+      });
+      if (currentLine.trim()) lines.push(currentLine.trim());
+
+      el.innerHTML = lines.map(line => 
+        `<span class="line-mask"><span class="line-mask__inner">${line}</span></span>`
+      ).join(' ');
+    });
+
+    // Animate
+    document.querySelectorAll('.page.active .line-mask').forEach((mask, i) => {
+      setTimeout(() => {
+        mask.classList.add('visible');
+      }, i * 80);
+    });
+  }
+
+  // Run after page transition
+  const originalNavigateTo = navigateTo;
+  window.navigateTo = function(pageId) {
+    originalNavigateTo(pageId);
+    setTimeout(splitLines, 500);
+  };
+
+  // Initial split
+  setTimeout(splitLines, 300);
+
+  // Re-split on resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      document.querySelectorAll('[data-split]').forEach(el => {
+        el.dataset.split = '';
+      });
+      splitLines();
+    }, 250);
+  });
+
+})();
+</script>
+</body>
+</html>

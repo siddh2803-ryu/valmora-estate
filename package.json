@@ -1,0 +1,12 @@
+{
+  "name": "valmora-estate",
+  "version": "1.0.0",
+  "description": "Valmora — A private estate in the Douro hills",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
