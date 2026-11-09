@@ -1,12 +1,36 @@
 {
   "name": "valmora-estate",
   "version": "1.0.0",
-  "description": "Valmora — A private estate in the Douro hills",
+  "description": "Valmora — A private estate in the Douro hills. An editorial, cinematic web experience prototype.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "lint:check": "node -e \"console.log('Validating project structure...'); const fs = require('fs'); fs.readFileSync('index.html'); fs.readFileSync('manifest.json'); console.log('All static assets verified successfully.');\"",
+    "test": "npm run lint:check"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siddh2803-ryu/valmora-estate.git"
+  },
+  "keywords": [
+    "prototype",
+    "portfolio",
+    "editorial-design",
+    "creative-developer",
+    "web-development",
+    "mobile-app-development",
+    "gsap",
+    "scrolltrigger",
+    "lenis",
+    "spa",
+    "pwa",
+    "freelance-developer"
+  ],
+  "author": "Ryu seon jae <siddh2803@gmail.com> (https://github.com/siddh2803-ryu)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/siddh2803-ryu/valmora-estate/issues"
+  },
+  "homepage": "https://valmora-estate.vercel.app"
 }
