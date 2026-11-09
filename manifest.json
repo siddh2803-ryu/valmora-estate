@@ -1,0 +1,23 @@
+{
+  "name": "Valmora Estate",
+  "short_name": "Valmora",
+  "description": "A private estate in the Douro hills — An editorial digital experience",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F4EFE6",
+  "theme_color": "#7A4A2B",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "travel",
+    "lifestyle",
+    "hospitality"
+  ]
+}
