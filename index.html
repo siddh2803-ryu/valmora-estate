@@ -3,7 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valmora — A private estate in the Douro hills</title>
+<title>Valmora — A private estate in the Douro hills | Prototype Showcase</title>
+
+<!-- Primary Meta Tags -->
+<meta name="title" content="Valmora — A private estate in the Douro hills | Prototype Showcase">
+<meta name="description" content="An editorial, cinematic digital experience prototype demonstrating bespoke web design, silky smooth GSAP motion, and fluid mobile UX. Built by Ryu seon jae (siddh2803-ryu). Available for hire.">
+<meta name="author" content="Ryu seon jae (siddh2803-ryu)">
+<meta name="keywords" content="Valmora, web design, frontend developer, mobile app developer, GSAP, Lenis, creative developer, hire web developer, luxury website design, UI/UX portfolio, prototype">
+<meta name="theme-color" content="#F4EFE6">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://valmora-estate.vercel.app">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://valmora-estate.vercel.app">
+<meta property="og:title" content="Valmora — Luxury Estate Editorial Digital Experience">
+<meta property="og:description" content="Cinematic web & mobile prototype showcasing high-end craftsmanship, GSAP motion, and fluid UI. Available for freelance & client projects.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://valmora-estate.vercel.app">
+<meta property="twitter:title" content="Valmora — Luxury Estate Editorial Digital Experience">
+<meta property="twitter:description" content="Cinematic web & mobile prototype showcasing high-end craftsmanship, GSAP motion, and fluid UI. Available for freelance & client projects.">
+<meta property="twitter:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80">
+
+<!-- Icons -->
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
+
+<!-- Web Application Manifest (PWA) -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Valmora">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
@@ -1430,6 +1464,70 @@ select:focus-visible {
 
 .villas-intro .h2 { margin-bottom: 20px; }
 .villas-intro .body-text { max-width: 50ch; }
+
+/* Hire Developer Floating Badge */
+.hire-pill {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99;
+  background: var(--ink);
+  color: var(--ground);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(30, 27, 22, 0.25);
+  border: 1px solid rgba(244, 239, 230, 0.2);
+  backdrop-filter: blur(8px);
+  transition: transform var(--duration-hover) var(--ease-editorial), box-shadow var(--duration-hover);
+}
+.hire-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 35px rgba(30, 27, 22, 0.35);
+}
+.hire-pill__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+}
+.hire-pill__text {
+  font-family: var(--font-grotesk);
+  opacity: 0.95;
+}
+.hire-pill__text strong {
+  color: #fff;
+  font-weight: 500;
+}
+.hire-pill__cta {
+  color: var(--ground);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 100px;
+  background: var(--accent-earth);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: opacity 0.2s;
+}
+.hire-pill__cta:hover {
+  opacity: 0.9;
+}
+@media (max-width: 640px) {
+  .hire-pill {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    justify-content: space-between;
+    font-size: 10px;
+  }
+}
 </style>
 </head>
 <body>
@@ -3064,7 +3162,23 @@ select:focus-visible {
     }, 250);
   });
 
+  // Register PWA Service Worker for offline resilience
+  if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch((err) => {
+        console.debug('ServiceWorker registration skipped:', err);
+      });
+    });
+  }
+
 })();
 </script>
+<!-- Floating Hire / Portfolio Badge -->
+<aside class="hire-pill" id="hirePill" aria-label="Developer Portfolio Notice">
+  <span class="hire-pill__dot" aria-hidden="true"></span>
+  <span class="hire-pill__text">Prototype by <strong>Ryu seon jae</strong> • Available for Hire</span>
+  <a href="mailto:siddh2803@gmail.com?subject=Project%20Inquiry%20from%20Valmora%20Prototype" class="hire-pill__cta">Hire Me</a>
+</aside>
+
 </body>
 </html>
