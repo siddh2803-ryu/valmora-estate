@@ -1,0 +1,5 @@
+# Valmora Estate — robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://valmora-estate.vercel.app/sitemap.xml
