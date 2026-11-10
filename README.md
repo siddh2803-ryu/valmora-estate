@@ -108,4 +108,4 @@ Open your browser to `http://localhost:4173`.
 ## 📄 License
 
 This prototype is distributed under the [MIT License](LICENSE).  
-Designed & Developed by **Ryu seon jae** ([@siddh2803-ryu](https://github.com/siddh2803-ryu)).
+Designed & Developed by **Siddharth Dhawan** ([@siddh2803-ryu](https://github.com/siddh2803-ryu)).
